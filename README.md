@@ -41,7 +41,7 @@ A self-hosted, multi-user fitness and workout planning application with AI-power
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone (https://github.com/winterweken/wrxs.git)
 cd wrxs
 ```
 
