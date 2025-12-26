@@ -1,20 +1,27 @@
-# WRXS - Workout & Fitness Tracker
+# 🏋️ WRXS - Workout & Fitness Tracker
 
-A self-hosted, multi-user fitness and workout planning application with AI-powered workout suggestions.
+> A self-hosted, multi-user fitness and workout planning application with AI-powered workout suggestions.
 
-## Features
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
 
-- **User Authentication**: Secure registration and login system
-- **Exercise Library**: Comprehensive database of exercises with filtering by category, difficulty, and muscle groups
-- **Workout Plans**: Create and manage custom workout plans with templates
-- **Progress Tracking**: Log workouts, track sets/reps/weight over time with detailed statistics
-- **AI Suggestions**: Get personalized workout recommendations based on your fitness level, available equipment, and goals
-- **Multi-User Support**: Multiple users can use the same instance with isolated data
-- **Self-Hosted**: Full control over your data with Docker deployment
+## ✨ Features
+
+- 🔐 **User Authentication**: Secure JWT-based registration and login system
+- 📚 **Exercise Library**: Comprehensive database of exercises with filtering by category, difficulty, and muscle groups
+- 📋 **Workout Plans**: Create and manage custom workout plans with templates
+- 📊 **Progress Tracking**: Log workouts, track sets/reps/weight over time with detailed statistics and visualizations
+- 🤖 **AI Suggestions**: Get personalized workout recommendations based on your fitness level, available equipment, and goals
+- 👥 **Multi-User Support**: Multiple users can use the same instance with isolated data
+- 🏠 **Self-Hosted**: Full control over your data with easy Docker deployment
+- 📱 **Responsive Design**: Works seamlessly on desktop and mobile devices
 
 ## Tech Stack
 
 ### Backend
+
 - **FastAPI**: Modern Python web framework
 - **PostgreSQL**: Robust relational database
 - **SQLAlchemy**: ORM for database operations
@@ -22,45 +29,56 @@ A self-hosted, multi-user fitness and workout planning application with AI-power
 - **OpenAI API**: Optional AI-powered workout suggestions
 
 ### Frontend
+
 - **React**: Modern UI library
 - **React Router**: Client-side routing
 - **Recharts**: Data visualization
 
 ### Deployment
+
 - **Docker & Docker Compose**: Containerized deployment
 - **Nginx**: Reverse proxy for frontend
 
-## Quick Start
+## 📸 Screenshots
+
+> Coming soon! Screenshots of the dashboard, exercise library, workout logging, and AI suggestions features.
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Docker and Docker Compose installed
-- (Optional) OpenAI API key for AI suggestions
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed
+- (Optional) [OpenAI API key](https://platform.openai.com/api-keys) for enhanced AI suggestions
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
-git clone (https://github.com/winterweken/wrxs.git)
+git clone https://github.com/winterweken/wrxs.git
 cd wrxs
 ```
 
 2. Copy the environment file and configure:
+
 ```bash
 cp .env.example .env
 ```
 
 3. Edit `.env` and set your configurations:
+
    - Generate a secure `SECRET_KEY` (use `openssl rand -hex 32`)
    - (Optional) Add your `OPENAI_API_KEY` for AI features
    - Modify database credentials if desired
 
 4. Build and start the application:
+
 ```bash
 docker-compose up -d
 ```
 
 5. Seed the database with sample exercises:
+
 ```bash
 docker-compose exec backend python -m app.seed_data
 ```
@@ -106,12 +124,12 @@ Note: AI suggestions work without OpenAI API using a rule-based fallback system.
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | postgresql://wrxs_user:wrxs_password@postgres:5432/wrxs |
-| `SECRET_KEY` | JWT secret key | your-secret-key-change-in-production |
-| `OPENAI_API_KEY` | OpenAI API key (optional) | - |
-| `REACT_APP_API_URL` | Backend API URL | http://localhost:8000 |
+| Variable            | Description                  | Default                                                 |
+| ------------------- | ---------------------------- | ------------------------------------------------------- |
+| `DATABASE_URL`      | PostgreSQL connection string | postgresql://wrxs_user:wrxs_password@postgres:5432/wrxs |
+| `SECRET_KEY`        | JWT secret key               | your-secret-key-change-in-production                    |
+| `OPENAI_API_KEY`    | OpenAI API key (optional)    | -                                                       |
+| `REACT_APP_API_URL` | Backend API URL              | http://localhost:8000                                   |
 
 ### Security Recommendations
 
@@ -146,6 +164,7 @@ Once the application is running, visit http://localhost:8000/docs for interactiv
 ### Running Locally (Development Mode)
 
 Backend:
+
 ```bash
 cd backend
 python -m venv venv
@@ -155,6 +174,7 @@ uvicorn app.main:app --reload
 ```
 
 Frontend:
+
 ```bash
 cd frontend
 npm install
@@ -173,6 +193,7 @@ docker-compose exec backend alembic upgrade head
 ### Adding Custom Exercises
 
 You can add exercises through:
+
 1. The web interface (Exercises page)
 2. Direct API calls
 3. Modifying `backend/app/seed_data.py` and re-running the seed script
