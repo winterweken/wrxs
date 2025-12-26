@@ -7,6 +7,35 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
 
+## 📖 About
+
+WRXS (Workout & Fitness Tracker) is a privacy-focused, self-hosted fitness tracking application designed for individuals and small groups who want complete control over their workout data. Unlike commercial fitness apps that monetize your data or require subscriptions, WRXS runs entirely on your own infrastructure.
+
+### Why WRXS?
+
+- **🔒 Privacy First**: Your workout data stays on your server. No third-party tracking, no data mining, no ads.
+- **💰 Cost Effective**: Free and open-source. No monthly subscriptions or premium tiers.
+- **🎯 Focused**: Built for serious fitness enthusiasts who want comprehensive tracking without the bloat.
+- **🤖 Smart**: Optional AI-powered workout suggestions that work even without an OpenAI API key (intelligent fallback system).
+- **👨‍👩‍👧‍👦 Multi-User**: Perfect for families, roommates, or small gym communities sharing one instance.
+
+### Who Is This For?
+
+- **Home Gym Enthusiasts**: Track your progress without relying on commercial apps
+- **Privacy-Conscious Athletes**: Keep your fitness data under your control
+- **Small Gyms/Trainers**: Provide tracking for clients without expensive software
+- **Developers**: A clean, well-documented codebase to learn from or extend
+- **Self-Hosters**: Add to your self-hosted stack alongside other services
+
+### Philosophy
+
+WRXS is built on the principle that your fitness data belongs to you. We believe in:
+
+- **Simplicity**: Clean, intuitive interface without unnecessary features
+- **Extensibility**: Well-structured code that's easy to modify and extend
+- **Reliability**: Robust backend with proper data validation and error handling
+- **Transparency**: Open-source code you can audit and trust
+
 ## ✨ Features
 
 - 🔐 **User Authentication**: Secure JWT-based registration and login system
