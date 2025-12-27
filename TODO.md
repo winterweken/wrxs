@@ -119,26 +119,25 @@ This document tracks planned features, improvements, and known issues for WRXS.
 
 - [ ] **Database Optimizations**
 
-  - [ ] Add database indexes for frequently queried fields
-  - [ ] Implement query pagination for all list endpoints
-  - [ ] Add database connection pooling configuration
-  - [ ] Set up database backup automation
-  - [ ] Implement soft deletes for user data
+  - [ ] Add explicit index to `WorkoutLog` on `(user_id, date)` for faster history queries
+  - [ ] Add explicit index to foreign keys (`exercise_id`, `workout_plan_id`)
+  - [ ] Implement pagination for `workout_logs` stats endpoint (currently fetches all)
+  - [ ] Optimize `generate_workout_suggestion_rule_based` to filter exercises in DB, not memory
+  - [ ] Fix N+1 query in `create_workout_plan` (validating exercises one by one)
+  - [ ] Fix N+1 query in `ai_suggestions` equipment filtering loop
 
-- [ ] **API Improvements**
+- [ ] **Code Quality & Reliability**
 
-  - [ ] Add API rate limiting
-  - [ ] Implement request caching for static data
-  - [ ] Add API versioning (v1, v2)
-  - [ ] Improve error messages and validation
-  - [ ] Add request/response logging
-  - [ ] OpenAPI schema validation
+  - [ ] Add validation for `sets_completed` matching `reps` array length in `WorkoutLog`
+  - [ ] Fix `ai_suggestions.py` optional import of `openai` inside function (move or handle gracefully)
+  - [ ] Fix potential crash in `bodyweight` filtering logic (checking `None` vs `[]` for JSON)
+  - [ ] Implement global exception handler for consistent error responses
+  - [ ] Add `created_by_id` check for systemic exercises deletion (ensure templates are protected)
 
 - [ ] **Security Enhancements**
-  - [ ] Add refresh token mechanism
-  - [ ] Implement password reset via email
-  - [ ] Add two-factor authentication (2FA)
-  - [ ] Rate limiting on authentication endpoints
+  - [ ] **CRITICAL**: Remove hardcoded "your-secret-key..." default from `config.py` (fail start if missing)
+  - [ ] Add refresh token mechanism (currently access token lasts 7 days)
+  - [ ] Implement rate limiting on auth and AI endpoints
   - [ ] Add CSRF protection
   - [ ] Security headers (HSTS, CSP, etc.)
   - [ ] Regular dependency updates and security audits
