@@ -2,6 +2,37 @@
 
 This document tracks planned features, improvements, and known issues for WRXS.
 
+## 🚨 Critical Priority Actions (Immediate Attention)
+
+> derived from Deep Dive Analysis
+
+### Security & Architecture
+
+- [ ] **Fix Hardcoded `SECRET_KEY` (Backend)** - **CRITICAL**
+  - _Risk_: Production key checking into VCS allows full account takeover.
+  - _Action_: Fail startup if `SECRET_KEY` env var is missing. Use `pydantic-settings`.
+- [ ] **Fix Hardcoded API URLs (Frontend)** - **HIGH**
+  - _Risk_: App undeployable to non-localhost environments.
+  - _Action_: Centralize `api.js` client using `process.env.REACT_APP_API_URL` and Axios interceptors.
+- [ ] **Input Validation (Frontend/Backend)** - **HIGH**
+  - _Risk_: Manual string parsing for sets/reps is error-prone.
+  - _Action_: Replace text inputs with dynamic "Stepper" UI or Repeater fields. Use React Hook Form + Zod.
+
+### Performance & Stability
+
+- [ ] **Database Indexing (Backend)** - **HIGH**
+  - _Risk_: Log history queries are O(N) and will hang with data growth.
+  - _Action_: Add composite index on `WorkoutLog(user_id, date)`.
+- [ ] **OpenAI Import Safety (Backend)** - **MEDIUM**
+  - _Risk_: Crash at runtime if package missing.
+  - _Action_: Move to top-level try/except or implement Service Pattern.
+
+## 💡 Stack Modernization Recommendations
+
+- **TanStack Query (React Query)**: Replace manual `useEffect` fetching and prop drilling. Handles caching/loading states automatically.
+- **React Hook Form + Zod**: Replace manual string parsing validation.
+- **Axios Interceptors**: Auto-inject JWT tokens instead of manual header addition in every fetch call.
+
 ## 🎯 High Priority
 
 ### Core Features
