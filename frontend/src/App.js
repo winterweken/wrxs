@@ -74,7 +74,7 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<Dashboard token={token} user={user} />} />
-          <Route path="/workouts" element={<Workouts token={token} />} />
+          <Route path="/workouts" element={<Workouts token={token} user={user} />} />
           <Route path="/exercises" element={<Exercises token={token} />} />
           <Route path="/profile" element={<Profile token={token} user={user} onUpdate={fetchUserProfile} onLogout={handleLogout} />} />
           <Route path="/ai-suggestions" element={<AISuggestions token={token} />} />

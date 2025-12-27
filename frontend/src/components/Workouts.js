@@ -1,14 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WorkoutPlans from './WorkoutPlans';
 import WorkoutLogs from './WorkoutLogs';
+import PersonalTrainer from './PersonalTrainer';
 
-function Workouts({ token }) {
+function Workouts({ token, user }) {
   const [activeTab, setActiveTab] = useState('logs');
+  const [insights, setInsights] = useState([]);
+  const [loadingInsights, setLoadingInsights] = useState(true);
+
+  useEffect(() => {
+    fetchInsights();
+  }, []);
+
+  const fetchInsights = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/trainer/insights?limit=3', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setInsights(data);
+      }
+    } catch (error) {
+      console.error('Error fetching insights:', error);
+    } finally {
+      setLoadingInsights(false);
+    }
+  };
 
   return (
     <div>
+      <h1 style={{ marginBottom: '24px' }}>Workouts</h1>
+
+      {/* Insights Section */}
+      {!loadingInsights && insights.length > 0 && (
+        <div style={{ marginBottom: '24px' }}>
+          <h3 style={{ marginBottom: '16px' }}>Training Insights</h3>
+          {insights.map(insight => (
+            <div key={insight.id} className="card" style={{ marginBottom: '12px', backgroundColor: '#f8f9fa' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ flex: 1 }}>
+                  <span className={`badge badge-${insight.insight_type.includes('plateau') || insight.insight_type.includes('recovery') ? 'warning' : 'primary'}`}>
+                    {insight.insight_type.replace('_', ' ')}
+                  </span>
+                  <p style={{ marginTop: '8px', marginBottom: '8px', fontWeight: '500' }}>{insight.insight_text}</p>
+                  {insight.recommendation && (
+                    <p style={{ padding: '8px 12px', backgroundColor: '#d4edda', borderRadius: '4px', fontSize: '14px', marginTop: '8px' }}>
+                      <strong>Recommendation:</strong> {insight.recommendation}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Tabs */}
       <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ marginBottom: '16px' }}>Workouts</h1>
         <div style={{
           display: 'flex',
           gap: '8px',
@@ -49,11 +100,29 @@ function Workouts({ token }) {
           >
             Plans
           </button>
+          <button
+            onClick={() => setActiveTab('trainer')}
+            style={{
+              padding: '12px 24px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'trainer' ? '3px solid #007bff' : '3px solid transparent',
+              color: activeTab === 'trainer' ? '#007bff' : '#666',
+              fontWeight: activeTab === 'trainer' ? '600' : '400',
+              fontSize: '16px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            AI Trainer
+          </button>
         </div>
       </div>
 
       {activeTab === 'logs' && <WorkoutLogs token={token} />}
       {activeTab === 'plans' && <WorkoutPlans token={token} />}
+      {activeTab === 'trainer' && <PersonalTrainer token={token} user={user} />}
     </div>
   );
 }

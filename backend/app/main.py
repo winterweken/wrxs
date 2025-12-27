@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import engine, Base
-from app.routers import auth, exercises, workout_plans, workout_logs, ai_suggestions
+from app.routers import auth, exercises, workout_plans, workout_logs, ai_suggestions, personal_trainer, gym_profiles
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -28,6 +28,8 @@ app.include_router(exercises.router)
 app.include_router(workout_plans.router)
 app.include_router(workout_logs.router)
 app.include_router(ai_suggestions.router)
+app.include_router(personal_trainer.router)
+app.include_router(gym_profiles.router)
 
 
 @app.get("/")
