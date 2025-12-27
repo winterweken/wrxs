@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 function Exercises({ token }) {
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedExercise, setSelectedExercise] = useState(null);
   const [filters, setFilters] = useState({
     category: '',
     difficulty: '',
@@ -103,7 +104,14 @@ function Exercises({ token }) {
       <div className="grid">
         {exercises.map((exercise) => (
           <div key={exercise.id} className="exercise-card">
-            <h3>{exercise.name}</h3>
+            <h3
+              onClick={() => setSelectedExercise(exercise)}
+              style={{ cursor: 'pointer', color: '#007bff', textDecoration: 'none' }}
+              onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+              onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+            >
+              {exercise.name}
+            </h3>
             <div style={{ marginBottom: '12px' }}>
               <span className={`badge ${getDifficultyColor(exercise.difficulty)}`}>
                 {exercise.difficulty}
@@ -131,6 +139,139 @@ function Exercises({ token }) {
           </div>
         ))}
       </div>
+
+      {/* Exercise Detail Modal */}
+      {selectedExercise && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '20px'
+          }}
+          onClick={() => setSelectedExercise(null)}
+        >
+          <div
+            className="card"
+            style={{
+              maxWidth: '800px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflow: 'auto',
+              position: 'relative'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedExercise(null)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'none',
+                border: 'none',
+                fontSize: '24px',
+                cursor: 'pointer',
+                color: '#666',
+                padding: '0',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              ×
+            </button>
+
+            <h2 style={{ marginBottom: '16px', paddingRight: '40px' }}>{selectedExercise.name}</h2>
+
+            <div style={{ marginBottom: '16px' }}>
+              <span className={`badge ${getDifficultyColor(selectedExercise.difficulty)}`}>
+                {selectedExercise.difficulty}
+              </span>
+              <span className="badge badge-primary">{selectedExercise.category}</span>
+            </div>
+
+            {selectedExercise.image_url && (
+              <img
+                src={selectedExercise.image_url}
+                alt={selectedExercise.name}
+                style={{
+                  width: '100%',
+                  maxHeight: '300px',
+                  objectFit: 'contain',
+                  marginBottom: '20px',
+                  borderRadius: '8px',
+                  backgroundColor: '#f5f5f5'
+                }}
+              />
+            )}
+
+            {selectedExercise.video_url && (
+              <div style={{ marginBottom: '20px' }}>
+                <h3>Video Demonstration</h3>
+                <a
+                  href={selectedExercise.video_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                >
+                  Watch Video
+                </a>
+              </div>
+            )}
+
+            <div style={{ marginBottom: '20px' }}>
+              <h3>Muscle Groups</h3>
+              <div>
+                {selectedExercise.muscle_groups.map((muscle, index) => (
+                  <span key={index} className="badge badge-primary" style={{ marginRight: '8px', marginBottom: '8px' }}>
+                    {muscle}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {selectedExercise.equipment && selectedExercise.equipment.length > 0 && (
+              <div style={{ marginBottom: '20px' }}>
+                <h3>Equipment Needed</h3>
+                <div>
+                  {selectedExercise.equipment.map((item, index) => (
+                    <span key={index} className="badge badge-primary" style={{ marginRight: '8px', marginBottom: '8px' }}>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedExercise.description && (
+              <div style={{ marginBottom: '20px' }}>
+                <h3>Description</h3>
+                <p>{selectedExercise.description}</p>
+              </div>
+            )}
+
+            {selectedExercise.instructions && (
+              <div style={{ marginBottom: '20px' }}>
+                <h3>Instructions</h3>
+                <div
+                  dangerouslySetInnerHTML={{ __html: selectedExercise.instructions }}
+                  style={{ lineHeight: '1.6' }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -131,8 +131,7 @@ function WorkoutLogs({ token }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Workout Logs</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <button
           className="btn btn-primary"
           onClick={() => setShowLogForm(!showLogForm)}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import AISuggestions from './AISuggestions';
 
-function Profile({ token, user, onUpdate }) {
+function Profile({ token, user, onUpdate, onLogout }) {
+  const [activeTab, setActiveTab] = useState('profile');
   const [formData, setFormData] = useState({
     full_name: '',
     weight_kg: '',
@@ -87,18 +89,63 @@ function Profile({ token, user, onUpdate }) {
 
   return (
     <div>
-      <h1>Profile</h1>
-
-      <div className="card" style={{ marginTop: '20px' }}>
-        <h3 style={{ marginBottom: '20px' }}>Account Information</h3>
-        <p><strong>Username:</strong> {user?.username}</p>
-        <p><strong>Email:</strong> {user?.email}</p>
-        <p><strong>Member Since:</strong> {user?.created_at ? new Date(user.created_at).toLocaleDateString() : '-'}</p>
+      <div style={{ marginBottom: '24px' }}>
+        <h1 style={{ marginBottom: '16px' }}>Profile</h1>
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          borderBottom: '2px solid #e0e0e0',
+          marginBottom: '24px'
+        }}>
+          <button
+            onClick={() => setActiveTab('profile')}
+            style={{
+              padding: '12px 24px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'profile' ? '3px solid #007bff' : '3px solid transparent',
+              color: activeTab === 'profile' ? '#007bff' : '#666',
+              fontWeight: activeTab === 'profile' ? '600' : '400',
+              fontSize: '16px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            Settings
+          </button>
+          <button
+            onClick={() => setActiveTab('ai')}
+            style={{
+              padding: '12px 24px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'ai' ? '3px solid #007bff' : '3px solid transparent',
+              color: activeTab === 'ai' ? '#007bff' : '#666',
+              fontWeight: activeTab === 'ai' ? '600' : '400',
+              fontSize: '16px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            AI Suggestions
+          </button>
+        </div>
       </div>
 
-      <div className="card" style={{ marginTop: '20px' }}>
-        <h3 style={{ marginBottom: '20px' }}>Update Profile</h3>
-        <form onSubmit={handleSubmit}>
+      {activeTab === 'profile' && (
+        <div>
+          <div className="card">
+            <h3 style={{ marginBottom: '20px' }}>Account Information</h3>
+            <p><strong>Username:</strong> {user?.username}</p>
+            <p><strong>Email:</strong> {user?.email}</p>
+            <p><strong>Member Since:</strong> {user?.created_at ? new Date(user.created_at).toLocaleDateString() : '-'}</p>
+          </div>
+
+          <div className="card" style={{ marginTop: '20px' }}>
+            <h3 style={{ marginBottom: '20px' }}>Update Profile</h3>
+            <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Full Name</label>
             <input
@@ -165,9 +212,20 @@ function Profile({ token, user, onUpdate }) {
             </div>
           )}
 
-          <button type="submit" className="btn btn-primary">Update Profile</button>
-        </form>
-      </div>
+              <button type="submit" className="btn btn-primary">Update Profile</button>
+            </form>
+          </div>
+
+          <div className="card" style={{ marginTop: '20px' }}>
+            <h3 style={{ marginBottom: '20px' }}>Account Actions</h3>
+            <button onClick={onLogout} className="btn btn-danger">
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'ai' && <AISuggestions token={token} />}
     </div>
   );
 }
