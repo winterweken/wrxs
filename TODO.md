@@ -145,29 +145,24 @@ This document tracks planned features, improvements, and known issues for WRXS.
 
 ### Frontend
 
-- [ ] **Performance Optimizations**
+- [ ] **Architecture & Refactoring**
 
-  - [ ] Implement React.lazy for code splitting
-  - [ ] Add service worker for offline support
-  - [ ] Optimize bundle size
-  - [ ] Implement virtual scrolling for long lists
-  - [ ] Add loading skeletons
-  - [ ] Image lazy loading
+  - [ ] **State Management**: Replace prop drilling of `token` with React Context (AuthProvider).
+  - [ ] **API Layer**: Centralize API base URL (remove hardcoded `http://localhost:8000`) and create an `api.js` client with interceptors for token injection.
+  - [ ] **Code Duplication**: Create a shared `useExercises` hook to abstract fetching and caching of exercise data.
+  - [ ] **Component Structure**: Move inline styles to CSS modules or styled-components to improve maintainability.
 
-- [ ] **State Management**
+- [ ] **UX Improvements (Deep Dive Findings)**
 
-  - [ ] Consider React Query or SWR for data fetching
-  - [ ] Implement optimistic updates
-  - [ ] Add proper error boundaries
-  - [ ] Centralize API calls in custom hooks
+  - [ ] **Input Handling**: Replace comma-separated text inputs for sets/reps in `WorkoutLogs.js` with dynamic form fields (Add Set button).
+  - [ ] **Loading States**: Replace "Loading..." text with skeleton loaders (e.g., in `WorkoutLogs`, `AISuggestions`).
+  - [ ] **Error Feedback**: Replace `console.error` and `alert` calls with a proper Toast notification system.
+  - [ ] **Date Formatting**: Standardize date formatting across components (currently using `toLocaleDateString()` directly).
 
-- [ ] **UI/UX Polish**
-  - [ ] Add dark mode support
-  - [ ] Implement keyboard shortcuts
-  - [ ] Add animations and transitions
-  - [ ] Improve accessibility (ARIA labels, keyboard navigation)
-  - [ ] Add tooltips and help text
-  - [ ] Implement undo/redo for certain actions
+- [ ] **Performance & Quality**
+  - [ ] **Virtualization**: Implement virtual list for `WorkoutLogs` table to handle large datasets efficiently.
+  - [ ] **Memoization**: Wrap expensive calculations and table rows in `React.memo` to prevent unnecessary re-renders.
+  - [ ] **Lazy Loading**: proper implementation of `React.lazy` for route components (`Dashboard`, `WorkoutLogs`, etc.).
 
 ### DevOps & Infrastructure
 
