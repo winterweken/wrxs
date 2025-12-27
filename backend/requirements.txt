@@ -12,3 +12,4 @@ bcrypt==3.2.2
 python-multipart==0.0.6
 openai==1.10.0
 httpx==0.26.0
+requests==2.31.0
