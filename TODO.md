@@ -2,6 +2,37 @@
 
 This document tracks planned features, improvements, and known issues for WRXS.
 
+## 🚨 Critical Priority Actions (Immediate Attention)
+
+> derived from Deep Dive Analysis
+
+### Security & Architecture
+
+- [ ] **Fix Hardcoded `SECRET_KEY` (Backend)** - **CRITICAL**
+  - _Risk_: Production key checking into VCS allows full account takeover.
+  - _Action_: Fail startup if `SECRET_KEY` env var is missing. Use `pydantic-settings`.
+- [ ] **Fix Hardcoded API URLs (Frontend)** - **HIGH**
+  - _Risk_: App undeployable to non-localhost environments.
+  - _Action_: Centralize `api.js` client using `process.env.REACT_APP_API_URL` and Axios interceptors.
+- [ ] **Input Validation (Frontend/Backend)** - **HIGH**
+  - _Risk_: Manual string parsing for sets/reps is error-prone.
+  - _Action_: Replace text inputs with dynamic "Stepper" UI or Repeater fields. Use React Hook Form + Zod.
+
+### Performance & Stability
+
+- [ ] **Database Indexing (Backend)** - **HIGH**
+  - _Risk_: Log history queries are O(N) and will hang with data growth.
+  - _Action_: Add composite index on `WorkoutLog(user_id, date)`.
+- [ ] **OpenAI Import Safety (Backend)** - **MEDIUM**
+  - _Risk_: Crash at runtime if package missing.
+  - _Action_: Move to top-level try/except or implement Service Pattern.
+
+## 💡 Stack Modernization Recommendations
+
+- **TanStack Query (React Query)**: Replace manual `useEffect` fetching and prop drilling. Handles caching/loading states automatically.
+- **React Hook Form + Zod**: Replace manual string parsing validation.
+- **Axios Interceptors**: Auto-inject JWT tokens instead of manual header addition in every fetch call.
+
 ## 🎯 High Priority
 
 ### Core Features
@@ -46,13 +77,16 @@ This document tracks planned features, improvements, and known issues for WRXS.
 
 ### User Experience
 
-- [ ] **Dashboard Improvements**
+- [x] **Dashboard Improvements** *(Completed 2025-12-30)*
 
-  - [ ] Add workout streak tracking
+  - [x] Add workout streak tracking *(current streak and personal best)*
+  - [x] Weekly activity visualization *(GitHub-style contribution grid)*
+  - [x] Week-over-week comparison stats *(workouts, sets, volume, days active)*
+  - [x] Workout frequency trend chart *(12-week bar chart with trend analysis)*
+  - [x] Quick action buttons for common tasks *(Add Workout, Create Workout Plan)*
   - [ ] Show upcoming scheduled workouts
   - [ ] Display recent activity feed
   - [ ] Add motivational quotes/tips
-  - [ ] Quick action buttons for common tasks
 
 - [ ] **Exercise Library Enhancements**
 
@@ -145,29 +179,24 @@ This document tracks planned features, improvements, and known issues for WRXS.
 
 ### Frontend
 
-- [ ] **Performance Optimizations**
+- [ ] **Architecture & Refactoring**
 
-  - [ ] Implement React.lazy for code splitting
-  - [ ] Add service worker for offline support
-  - [ ] Optimize bundle size
-  - [ ] Implement virtual scrolling for long lists
-  - [ ] Add loading skeletons
-  - [ ] Image lazy loading
+  - [ ] **State Management**: Replace prop drilling of `token` with React Context (AuthProvider).
+  - [ ] **API Layer**: Centralize API base URL (remove hardcoded `http://localhost:8000`) and create an `api.js` client with interceptors for token injection.
+  - [ ] **Code Duplication**: Create a shared `useExercises` hook to abstract fetching and caching of exercise data.
+  - [ ] **Component Structure**: Move inline styles to CSS modules or styled-components to improve maintainability.
 
-- [ ] **State Management**
+- [ ] **UX Improvements (Deep Dive Findings)**
 
-  - [ ] Consider React Query or SWR for data fetching
-  - [ ] Implement optimistic updates
-  - [ ] Add proper error boundaries
-  - [ ] Centralize API calls in custom hooks
+  - [ ] **Input Handling**: Replace comma-separated text inputs for sets/reps in `WorkoutLogs.js` with dynamic form fields (Add Set button).
+  - [ ] **Loading States**: Replace "Loading..." text with skeleton loaders (e.g., in `WorkoutLogs`, `AISuggestions`).
+  - [ ] **Error Feedback**: Replace `console.error` and `alert` calls with a proper Toast notification system.
+  - [ ] **Date Formatting**: Standardize date formatting across components (currently using `toLocaleDateString()` directly).
 
-- [ ] **UI/UX Polish**
-  - [ ] Add dark mode support
-  - [ ] Implement keyboard shortcuts
-  - [ ] Add animations and transitions
-  - [ ] Improve accessibility (ARIA labels, keyboard navigation)
-  - [ ] Add tooltips and help text
-  - [ ] Implement undo/redo for certain actions
+- [ ] **Performance & Quality**
+  - [ ] **Virtualization**: Implement virtual list for `WorkoutLogs` table to handle large datasets efficiently.
+  - [ ] **Memoization**: Wrap expensive calculations and table rows in `React.memo` to prevent unnecessary re-renders.
+  - [ ] **Lazy Loading**: proper implementation of `React.lazy` for route components (`Dashboard`, `WorkoutLogs`, etc.).
 
 ### DevOps & Infrastructure
 

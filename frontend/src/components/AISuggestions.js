@@ -73,9 +73,7 @@ function AISuggestions({ token }) {
 
   return (
     <div>
-      <h1>AI Workout Suggestions</h1>
-
-      <div className="card" style={{ marginTop: '20px' }}>
+      <div className="card">
         <h3 style={{ marginBottom: '20px' }}>Get Personalized Workout Recommendations</h3>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
