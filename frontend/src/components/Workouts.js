@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import WorkoutPlans from './WorkoutPlans';
 import WorkoutLogs from './WorkoutLogs';
 import PersonalTrainer from './PersonalTrainer';
+import PRHighlights from './PRHighlights';
+import BodyMeasurements from './BodyMeasurements';
+import ProgressPhotos from './ProgressPhotos';
+import WeightProgressionChart from './WeightProgressionChart';
 
 function Workouts({ token, user }) {
   const [activeTab, setActiveTab] = useState('logs');
@@ -9,6 +13,11 @@ function Workouts({ token, user }) {
   const [loadingInsights, setLoadingInsights] = useState(true);
 
   useEffect(() => {
+    // Check for hash in URL to set initial tab
+    const hash = window.location.hash.replace('#', '');
+    if (hash && ['logs', 'plans', 'trainer', 'progress'].includes(hash)) {
+      setActiveTab(hash);
+    }
     fetchInsights();
   }, []);
 
@@ -117,12 +126,37 @@ function Workouts({ token, user }) {
           >
             AI Trainer
           </button>
+          <button
+            onClick={() => setActiveTab('progress')}
+            style={{
+              padding: '12px 24px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'progress' ? '3px solid #007bff' : '3px solid transparent',
+              color: activeTab === 'progress' ? '#007bff' : '#666',
+              fontWeight: activeTab === 'progress' ? '600' : '400',
+              fontSize: '16px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            Progress
+          </button>
         </div>
       </div>
 
       {activeTab === 'logs' && <WorkoutLogs token={token} />}
       {activeTab === 'plans' && <WorkoutPlans token={token} />}
       {activeTab === 'trainer' && <PersonalTrainer token={token} user={user} />}
+      {activeTab === 'progress' && (
+        <div>
+          <PRHighlights token={token} />
+          <WeightProgressionChart token={token} />
+          <BodyMeasurements token={token} user={user} />
+          <ProgressPhotos token={token} />
+        </div>
+      )}
     </div>
   );
 }

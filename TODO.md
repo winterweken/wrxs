@@ -77,13 +77,16 @@ This document tracks planned features, improvements, and known issues for WRXS.
 
 ### User Experience
 
-- [ ] **Dashboard Improvements**
+- [x] **Dashboard Improvements** *(Completed 2025-12-30)*
 
-  - [ ] Add workout streak tracking
+  - [x] Add workout streak tracking *(current streak and personal best)*
+  - [x] Weekly activity visualization *(GitHub-style contribution grid)*
+  - [x] Week-over-week comparison stats *(workouts, sets, volume, days active)*
+  - [x] Workout frequency trend chart *(12-week bar chart with trend analysis)*
+  - [x] Quick action buttons for common tasks *(Add Workout, Create Workout Plan)*
   - [ ] Show upcoming scheduled workouts
   - [ ] Display recent activity feed
   - [ ] Add motivational quotes/tips
-  - [ ] Quick action buttons for common tasks
 
 - [ ] **Exercise Library Enhancements**
 
