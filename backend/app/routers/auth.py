@@ -71,6 +71,19 @@ async def update_user_profile(
     current_user: models.User = Depends(auth.get_current_active_user),
     db: Session = Depends(get_db)
 ):
+    # Check for unique username/email if updating
+    if user_update.username is not None and user_update.username != current_user.username:
+        existing = auth.get_user_by_username(db, username=user_update.username)
+        if existing:
+            raise HTTPException(status_code=400, detail="Username already taken")
+        current_user.username = user_update.username
+
+    if user_update.email is not None and user_update.email != current_user.email:
+        existing = auth.get_user_by_email(db, email=user_update.email)
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already registered")
+        current_user.email = user_update.email
+
     if user_update.full_name is not None:
         current_user.full_name = user_update.full_name
     if user_update.weight_kg is not None:
@@ -81,6 +94,18 @@ async def update_user_profile(
         current_user.fitness_level = user_update.fitness_level
     if user_update.fitness_goals is not None:
         current_user.fitness_goals = user_update.fitness_goals
+    if user_update.weight_unit is not None:
+        current_user.weight_unit = user_update.weight_unit
+    if user_update.distance_unit is not None:
+        current_user.distance_unit = user_update.distance_unit
+    if user_update.measurement_unit is not None:
+        current_user.measurement_unit = user_update.measurement_unit
+    if user_update.age is not None:
+        current_user.age = user_update.age
+    if user_update.sex is not None:
+        current_user.sex = user_update.sex
+    if user_update.location is not None:
+        current_user.location = user_update.location
 
     db.commit()
     db.refresh(current_user)

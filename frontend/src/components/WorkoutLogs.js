@@ -131,15 +131,6 @@ function WorkoutLogs({ token }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Workout Logs</h1>
-        <button
-          className="btn btn-primary"
-          onClick={() => setShowLogForm(!showLogForm)}
-        >
-          {showLogForm ? 'Cancel' : 'Log New Workout'}
-        </button>
-      </div>
 
       {showLogForm && (
         <div className="card" style={{ marginTop: '20px' }}>
@@ -220,11 +211,26 @@ function WorkoutLogs({ token }) {
 
       {logs.length === 0 ? (
         <div className="card" style={{ marginTop: '20px', textAlign: 'center', padding: '40px' }}>
-          <p style={{ color: '#666' }}>No workout logs yet. Start logging your workouts!</p>
+          <p style={{ color: '#666', marginBottom: '20px' }}>No workout logs yet.</p>
+          <button
+            className="btn btn-primary"
+            onClick={() => setShowLogForm(true)}
+          >
+            Add Workout
+          </button>
         </div>
       ) : (
-        <div className="card" style={{ marginTop: '20px' }}>
-          <table>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
+            <button
+              className="btn btn-primary"
+              onClick={() => setShowLogForm(!showLogForm)}
+            >
+              {showLogForm ? 'Cancel' : 'Add Workout'}
+            </button>
+          </div>
+          <div className="card">
+            <table>
             <thead>
               <tr>
                 <th>Date</th>
@@ -256,6 +262,7 @@ function WorkoutLogs({ token }) {
               ))}
             </tbody>
           </table>
+        </div>
         </div>
       )}
     </div>

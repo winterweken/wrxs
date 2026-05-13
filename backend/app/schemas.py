@@ -15,11 +15,19 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
     full_name: Optional[str] = None
     weight_kg: Optional[float] = None
     height_cm: Optional[float] = None
     fitness_level: Optional[str] = None
     fitness_goals: Optional[List[str]] = None
+    weight_unit: Optional[str] = None
+    distance_unit: Optional[str] = None
+    measurement_unit: Optional[str] = None
+    age: Optional[int] = None
+    sex: Optional[str] = None
+    location: Optional[str] = None
 
 
 class User(UserBase):
@@ -30,6 +38,12 @@ class User(UserBase):
     height_cm: Optional[float] = None
     fitness_level: Optional[str] = None
     fitness_goals: Optional[List[str]] = None
+    weight_unit: Optional[str] = None
+    distance_unit: Optional[str] = None
+    measurement_unit: Optional[str] = None
+    age: Optional[int] = None
+    sex: Optional[str] = None
+    location: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -151,3 +165,113 @@ class WorkoutSuggestion(BaseModel):
     recommended_workout_plan_id: Optional[int] = None
     suggested_exercises: List[Exercise]
     rationale: str
+
+
+# Personal Trainer Schemas
+class TrainerProgramRequest(BaseModel):
+    program_type: str  # "daily" or "multi_week"
+    duration_weeks: Optional[int] = None
+    days_per_week: int = 3
+    fitness_level: Optional[str] = None
+    fitness_goals: Optional[List[str]] = None
+    available_equipment: Optional[List[str]] = None
+    time_per_session_minutes: int = 60
+    preferences: Optional[dict] = None
+
+
+class DailyWorkoutExerciseResponse(BaseModel):
+    id: int
+    exercise: Exercise
+    order: int
+    sets: int
+    reps: List  # Can be List[int] or List[str] for ranges like "10-12"
+    rest_seconds: int
+    intensity_level: Optional[str] = None
+    notes: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class DailyWorkoutResponse(BaseModel):
+    id: int
+    workout_name: str
+    focus_areas: List[str]
+    estimated_duration_minutes: int
+    notes: Optional[str] = None
+    day_number: int
+    exercises: List[DailyWorkoutExerciseResponse] = []
+
+    class Config:
+        from_attributes = True
+
+
+class WeeklyPlanResponse(BaseModel):
+    id: int
+    week_number: int
+    theme: Optional[str] = None
+    notes: Optional[str] = None
+    daily_workouts: List[DailyWorkoutResponse] = []
+
+    class Config:
+        from_attributes = True
+
+
+class AITrainingProgramResponse(BaseModel):
+    id: int
+    program_type: str
+    name: str
+    description: Optional[str] = None
+    ai_rationale: str
+    fitness_level: str
+    fitness_goals: List[str]
+    available_equipment: Optional[List[str]] = None
+    duration_weeks: Optional[int] = None
+    days_per_week: int
+    difficulty: str
+    status: str
+    created_at: datetime
+    weekly_plans: List[WeeklyPlanResponse] = []
+
+    class Config:
+        from_attributes = True
+
+
+class AdaptationInsight(BaseModel):
+    id: int
+    insight_type: str
+    insight_text: str
+    data_basis: dict
+    recommendation: Optional[str] = None
+    applied_to_program: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# Gym Profile Schemas
+class GymProfileBase(BaseModel):
+    name: str
+    gym_chain: Optional[str] = None
+    equipment: List[str]
+
+
+class GymProfileCreate(GymProfileBase):
+    pass
+
+
+class GymProfileUpdate(BaseModel):
+    name: Optional[str] = None
+    gym_chain: Optional[str] = None
+    equipment: Optional[List[str]] = None
+
+
+class GymProfile(GymProfileBase):
+    id: int
+    user_id: int
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
